@@ -1,0 +1,98 @@
+<html>
+<!--
+'	========================================================================='
+'	File Name: TS-Charging.hta
+'	
+'	File Creator/Author: James Geater
+'	
+'	Functional Description: Display a message while the battery is charging
+'
+'	Revision History:
+'   <Ver>	<Date>	 <Name>		               <Revision>
+'	=========================================================================='
+-->
+<head>
+<title>Charging the battery</title>
+
+<HTA:APPLICATION 
+     ID="objHTA" 
+     APPLICATIONNAME="TSPAUSED"
+     SCROLL="no"
+     MAXIMIZEBUTTON="no"
+     MINIMIZEBUTTON="no"
+     SINGLEINSTANCE=YES
+     WINDOWSTATE=normal
+     APPLICATION=YES
+     SHOWINTASKBAR=YES
+     NAVIGABLE=NO
+>
+</head>
+
+<script language="VBScript">
+
+'------------------------------------------------------------------------------------------- 
+'	define global variables
+'------------------------------------------------------------------------------------------- 
+OPTION EXPLICIT
+
+'------------------------------------------------------------------------------------------- 
+'	size/position window
+'------------------------------------------------------------------------------------------- 
+Sub Window_OnLoad
+
+	dim TSProgressUI, oTaskSequence, w, h
+'	Set oTaskSequence = CreateObject("Microsoft.SMS.TSEnvironment")
+'	if isObject(oTaskSequence) then oTaskSequence("InvalidMT") = "BAD"
+    
+    on error resume next
+	    set TSProgressUI = CreateObject("Microsoft.SMS.TsProgressUI")
+	    TSProgressUI.CloseProgressDialog
+	    set TSProgressUI = nothing
+    on error goto 0
+
+    w = 100+screen.availWidth/2
+	h = screen.availHeight/2
+	self.resizeto w, h
+	self.moveTo (screen.width-w)/2,(screen.height-h)/2
+	self.focus()
+
+End Sub
+
+'------------------------------------------------------------------------------------------- 
+'	Form submission callback - validate the data
+'------------------------------------------------------------------------------------------- 
+Sub CheckEnterKey
+    If window.event.Keycode = 13 Then
+        GoKillSelf()
+    End If
+End Sub
+
+'------------------------------------------------------------------------------------------- 
+'	Kill script
+'------------------------------------------------------------------------------------------- 
+sub GoKillSelf
+	self.close
+end sub
+
+</script>
+
+'------------------------------------------------------------------------------------------- 
+'	Paint the form
+'------------------------------------------------------------------------------------------- 
+
+</body>
+
+<body onkeypress="CheckEnterKey"><BR>
+<p align="center"> <font color="red" size="70"><BR>Task Sequence has been Paused!</font>
+<BR><BR><BR><BR></P>
+<p align="center">The current battery level is too low to safely continue</P> 
+<p align="center">Plug in the AC adapter and let the system charge.</P> 
+<p align="center">The Task Sequence will automatically continue when the battery is charged to a safe Level.</P>
+<p align="center">This may take a long time if the battery is very low.</P> 
+<BR><BR>
+</P>
+
+
+
+</body>
+</html>
